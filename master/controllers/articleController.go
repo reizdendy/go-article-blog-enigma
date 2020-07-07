@@ -100,15 +100,20 @@ func (a *articleHandler) UpdateArticlePage(w http.ResponseWriter, r *http.Reques
 	if err != nil {
 		w.Write([]byte("Something went wrong !"))
 	} else {
-		articleResponse.Messages = "Update Article Success"
-		articleResponse.Status = http.StatusOK
-		articleResponse.Data = ""
-		byteOfArticle, err := json.Marshal(articleResponse)
+		article, err := a.articleUsecase.GetArticleByID(creator, idArticle)
 		if err != nil {
-			w.Write([]byte("Something went wrong!"))
+			w.Write([]byte("Something went wrong !"))
+		} else {
+			articleResponse.Messages = "Update Article Success"
+			articleResponse.Status = http.StatusOK
+			articleResponse.Data = article
+			byteOfArticle, err := json.Marshal(articleResponse)
+			if err != nil {
+				w.Write([]byte("Something went wrong!"))
+			}
+			w.Header().Set("content-type", "application/json")
+			w.Write(byteOfArticle)
 		}
-		w.Header().Set("content-type", "application/json")
-		w.Write(byteOfArticle)
 	}
 }
 
