@@ -2,7 +2,7 @@ package utils
 
 const (
 	// USER QUERIES
-	GET_ALL_USER   = "SELECT user_name, password, email from m_user"
+	GET_ALL_USER   = "SELECT user_name, password, email from m_user where user_name like ? order by ? ? limit ?, ?"
 	GET_USER_BY_ID = "SELECT user_name, password, email FROM m_user WHERE user_name = ?"
 	ADD_USER       = "INSERT INTO m_user(user_name, password, email) VALUES(?, ?, ?)"
 	UPDATE_USER    = ""

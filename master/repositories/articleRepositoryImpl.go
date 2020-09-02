@@ -55,14 +55,14 @@ func (a *articleRepoImpl) AddArticle(articleName, articleContent, articleUser st
 	stmt, err := a.db.Prepare(utils.ADD_ARTICLE)
 	if err != nil {
 		tx.Rollback()
-		log.Fatalf("%v", err)
+		log.Printf("%v", err)
 		return err
 	}
 	defer stmt.Close()
-	_, err = stmt.Exec(guuid.New(), articleName, articleContent, articleUser, time.Now().Format("2006-02-01 15:04:05"))
+	_, err = stmt.Exec(guuid.New(), articleName, articleContent, articleUser, time.Now().Format("2006-01-02 15:04:05"))
 	if err != nil {
 		tx.Rollback()
-		log.Fatalf("%v", err)
+		log.Printf("%v", err)
 		return err
 	}
 	return tx.Commit()

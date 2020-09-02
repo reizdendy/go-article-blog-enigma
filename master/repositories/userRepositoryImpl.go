@@ -12,8 +12,24 @@ type userRepoImpl struct {
 	db *sql.DB
 }
 
-func (u *userRepoImpl) GetAllUser() ([]*models.User, error) {
-	rows, err := u.db.Query(utils.GET_ALL_USER)
+func (u *userRepoImpl) GetAllUser(keyword, page, limit, orderBy, sort string) ([]*models.User, error) {
+	// tx, err := u.db.Begin()
+	// if err != nil {
+	// 	return nil, err
+	// }
+	queryInput := fmt.Sprintf("SELECT user_name, password, email from m_user where user_name like ? order by %s %s limit %s, %s", orderBy, sort, page, limit)
+	// fmt.Println(queryInput)
+
+	// stmt, err := u.db.Prepare(utils.GET_ALL_USER)
+	// if err != nil {
+	// 	tx.Rollback()
+	// 	log.Printf("%v", err)
+	// 	return nil, err
+	// }
+	// defer stmt.Close()
+
+	rows, err := u.db.Query(queryInput, "%"+keyword+"%")
+	fmt.Println(err)
 	if err != nil {
 		return nil, err
 	}
